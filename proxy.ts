@@ -6,8 +6,8 @@ function createRouteMatcher(routes: string[]) {
 }
 
 const isPublicRoute = createRouteMatcher([
-  "/signin",
-  "signup",
+  "/sign-in",
+  "/sign-up",
   "/",
   "/home"
 ])
@@ -29,11 +29,11 @@ export default clerkMiddleware(async (auth, req)=>{
   if(!userId){
     //if user is not logges in and trying to access a protected route
     if (!isPublicRoute(req) && !isPublicApiRoute(req)) {
-      return NextResponse.redirect(new URL("/signin", req.url));
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     }
     //if the req is for protected api and user is not logged in
     if (isApiRequest && !isPublicApiRoute(req)) {
-      return NextResponse.redirect(new URL("/signin", req.url));
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   }
   return NextResponse.next()
