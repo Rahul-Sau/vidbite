@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="navbar bg-base-100 shadow-sm px-4">
         <div className="flex-1">
           <Link href="/home" className="text-xl font-bold text-primary">
-            CurrentFlow
+            ClipSnap
           </Link>
         </div>
         <div className="flex-none gap-2">

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CurrentFlow",
+  title: "ClipSnap",
   description: "Upload, compress, and share your videos with smart previews.",
 };
 
