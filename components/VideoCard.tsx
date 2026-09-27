@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getCldImageUrl, getCldVideoUrl } from "next-cloudinary";
-import { Download, Clock, FileDown, FileUp } from "lucide-react";
+import { Download, Clock, FileDown, FileUp, Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { filesize } from "filesize";
@@ -13,9 +13,14 @@ dayjs.extend(relativeTime);
 interface VideoCardProps {
   video: Video;
   onDownload: (url: string, title: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
+const VideoCard: React.FC<VideoCardProps> = ({
+  video,
+  onDownload,
+  onDelete,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [previewError, setPreviewError] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
@@ -52,7 +57,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
         width: 400,
         height: 225,
         rawTransformations: [
-          `e_preview:duration_${duration}:max_seg_9:min_seg_1`,
+          `e_preview:duration_${duration}:max_seg_9:min_seg_dur_1`,
           ...(startOffset ? [`so_${startOffset}`] : []),
         ],
       });
@@ -150,7 +155,13 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
           </div>
         </div>
 
-        <div className="card-actions justify-end mt-4">
+        <div className="card-actions justify-end mt-4 gap-2">
+          <button
+            className="btn btn-ghost btn-sm text-error gap-2"
+            onClick={() => onDelete(video.id)}
+          >
+            <Trash2 size={16} />
+          </button>
           <button
             className="btn btn-primary btn-sm gap-2"
             onClick={() =>

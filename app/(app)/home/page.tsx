@@ -45,6 +45,17 @@ function Home() {
     document.body.removeChild(link);
   }, []);
 
+  const handleDelete = useCallback(async (id: string) => {
+    if (!confirm("Delete this video? This can't be undone.")) return;
+    try {
+      await axios.delete(`/api/videos/${id}`);
+      setVideos((prev) => prev.filter((v) => v.id !== id));
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete video");
+    }
+  }, []);
+
   const visibleVideos = useMemo(() => {
     const filtered = videos.filter((video) =>
       video.title.toLowerCase().includes(search.toLowerCase()),
@@ -168,6 +179,7 @@ function Home() {
               key={video.id}
               video={video}
               onDownload={handleDownload}
+              onDelete={handleDelete}
             />
           ))}
         </div>
