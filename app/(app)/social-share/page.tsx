@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { CldImage } from "next-cloudinary";
+import { Image as ImageIcon, Download } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
 
 const socialFormats = {
   "Instagram Square(1:1)": { width: 1080, height: 1080, aspectRatio: "1:1" },
@@ -78,10 +80,13 @@ export default function SocialShare() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Social Media Image Generator
-      </h1>
-      <div className="card">
+      <PageHeader
+        icon={ImageIcon}
+        title="Social Media Image Generator"
+        subtitle="Upload once, crop it for every platform."
+      />
+
+      <div className="card bg-base-100 shadow">
         <div className="card-body">
           <h2 className="card-title mb-4">Upload Image</h2>
           <div className="form-control">
@@ -102,23 +107,21 @@ export default function SocialShare() {
           {uploadedImage && (
             <div className="mt-6">
               <h2 className="card-title mb-4">Select Social Media Format</h2>
-              <div className="form-control">
-                <select
-                  className="select select-bordered w-full"
-                  value={selectedFormat}
-                  onChange={(e) =>
-                    setSelectedFormat(e.target.value as SocialFormat)
-                  }
-                >
-                  {Object.keys(socialFormats).map((format) => (
-                    <option key={format} value={format}>
-                      {format}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <select
+                className="select select-bordered w-full mb-6"
+                value={selectedFormat}
+                onChange={(e) =>
+                  setSelectedFormat(e.target.value as SocialFormat)
+                }
+              >
+                {Object.keys(socialFormats).map((format) => (
+                  <option key={format} value={format}>
+                    {format}
+                  </option>
+                ))}
+              </select>
 
-              <div className="mt-6 relative">
+              <div className="relative">
                 <h3 className="text-lg font-semibold mb-2">Preview:</h3>
                 <div className="flex justify-center">
                   {isTransforming && (
@@ -142,7 +145,11 @@ export default function SocialShare() {
               </div>
 
               <div className="card-actions justify-end mt-6">
-                <button className="btn btn-primary" onClick={handleDownload}>
+                <button
+                  className="btn btn-primary gap-2"
+                  onClick={handleDownload}
+                >
+                  <Download size={18} />
                   Download for {selectedFormat}
                 </button>
               </div>

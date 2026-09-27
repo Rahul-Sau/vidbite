@@ -49,6 +49,19 @@ interface CloudinartUploadResult{
       if(!file){
         return NextResponse.json({error: "File not found"}, {status:400})
       }
+      if (!file.type.startsWith("video/")) {
+        return NextResponse.json(
+          { error: "File must be a video" },
+          { status: 400 },
+        );
+      }
+      if (file.size > 100 * 1024 * 1024) {
+        return NextResponse.json(
+          { error: "File too large (max 100MB)" },
+          { status: 400 },
+        );
+      }
+
       const bytes = await file.arrayBuffer()
       const buffer = Buffer.from(bytes)
 

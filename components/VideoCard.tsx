@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { filesize } from "filesize";
 import { Video } from "@/types";
+import { getHighlightConfig } from "@/lib/highlight";
+import Image from "next/image";
 
 dayjs.extend(relativeTime);
 
@@ -16,6 +18,7 @@ interface VideoCardProps {
 const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [previewError, setPreviewError] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
 
   const getThumbnailUrl = useCallback((publicId: string) => {
     return getCldImageUrl({
@@ -38,14 +41,24 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
     });
   }, []);
 
-  const getPreviewVideoUrl = useCallback((publicId: string) => {
-    return getCldVideoUrl({
-      src: publicId,
-      width: 400,
-      height: 225,
-      rawTransformations: ["e_preview:duration_15:max_seg_9:min_seg_1"],
-    });
-  }, []);
+  const getPreviewVideoUrl = useCallback(
+    (publicId: string) => {
+      const { duration, startOffset } = getHighlightConfig(
+        video.title,
+        video.description,
+      );
+      return getCldVideoUrl({
+        src: publicId,
+        width: 400,
+        height: 225,
+        rawTransformations: [
+          `e_preview:duration_${duration}:max_seg_9:min_seg_1`,
+          ...(startOffset ? [`so_${startOffset}`] : []),
+        ],
+      });
+    },
+    [video.title, video.description],
+  );
 
   const formatSize = useCallback((size: number) => {
     return filesize(size);
@@ -63,6 +76,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
 
   useEffect(() => {
     setPreviewError(false);
+    setPreviewLoaded(false);
   }, [isHovered]);
 
   const handlePreviewError = () => {
@@ -71,76 +85,80 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
 
   return (
     <div
-      className="card bg-base-100 shadow hover:shadow-lg transition-shadow"
+      className="card bg-base-100 shadow hover:shadow-xl hover:-translate-y-1 transition-all duration-200"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <figure className="aspect-video relative">
+      <figure className="aspect-video relative bg-base-200 overflow-hidden">
         {isHovered ? (
           previewError ? (
             <div className="w-full h-full flex items-center justify-center bg-base-200">
-              <p className="text-red-500">Preview not available</p>
+              <p className="text-sm text-error">Preview not available</p>
             </div>
           ) : (
-            <video
-              src={getPreviewVideoUrl(video.publicId)}
-              autoPlay
-              muted
-              loop
-              className="w-full h-full object-cover"
-              onError={handlePreviewError}
-            />
+            <>
+              {!previewLoaded && (
+                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-base-300 via-base-200 to-base-300 bg-[length:200%_100%]" />
+              )}
+              <video
+                src={getPreviewVideoUrl(video.publicId)}
+                autoPlay
+                muted
+                loop
+                className="w-full h-full object-cover"
+                onError={handlePreviewError}
+                onCanPlay={() => setPreviewLoaded(true)}
+              />
+            </>
           )
         ) : (
-          <img
+          <Image
             src={getThumbnailUrl(video.publicId)}
             alt={video.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         )}
-        <div className="absolute bottom-2 right-2 bg-base-100 bg-opacity-70 px-2 py-1 rounded-lg text-sm flex items-center">
-          <Clock size={16} className="mr-1" />
+        <div className="absolute bottom-2 right-2 badge badge-neutral gap-1">
+          <Clock size={14} />
           {formatDuration(Number(video.duration))}
         </div>
       </figure>
 
       <div className="card-body p-4">
         <h2 className="card-title text-lg">{video.title}</h2>
-        <p className="text-sm text-base-content opacity-70">
-          {video.description}
-        </p>
-        <p className="text-sm text-base-content opacity-70">
+        {video.description && (
+          <p className="text-sm text-base-content/60 line-clamp-2">
+            {video.description}
+          </p>
+        )}
+        <p className="text-xs text-base-content/50">
           Uploaded {dayjs(video.createdAt).fromNow()}
         </p>
 
-        <div className="grid grid-cols-2 gap-4 text-sm mt-2">
-          <div className="flex items-center">
-            <FileUp size={18} className="mr-2 text-primary" />
-            <div>
-              <div className="font-semibold">Original</div>
-              <div>{formatSize(Number(video.originalSize))}</div>
-            </div>
+        <div className="flex flex-wrap gap-2 mt-2">
+          <div className="badge badge-outline gap-1">
+            <FileUp size={14} />
+            {formatSize(Number(video.originalSize))}
           </div>
-          <div className="flex items-center">
-            <FileDown size={18} className="mr-2 text-secondary" />
-            <div>
-              <div className="font-semibold">Compressed</div>
-              <div>{formatSize(Number(video.compressedSize))}</div>
-            </div>
+          <div className="badge badge-outline gap-1">
+            <FileDown size={14} />
+            {formatSize(Number(video.compressedSize))}
+          </div>
+          <div className="badge badge-success badge-outline">
+            -{compressionPercentage}%
           </div>
         </div>
 
-        <div className="card-actions justify-between items-center mt-4">
-          <div className="text-sm font-semibold">
-            Compression: {compressionPercentage}%
-          </div>
+        <div className="card-actions justify-end mt-4">
           <button
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm gap-2"
             onClick={() =>
               onDownload(getFullVideoUrl(video.publicId), video.title)
             }
           >
             <Download size={16} />
+            Download
           </button>
         </div>
       </div>
