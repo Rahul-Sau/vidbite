@@ -538,6 +538,7 @@ export const VideoScalarFieldEnum = {
   originalSize: 'originalSize',
   compressedSize: 'compressedSize',
   duration: 'duration',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -32,6 +32,10 @@ export async function DELETE(
       return NextResponse.json({ error: "Video not found" }, { status: 404 });
     }
 
+    if (video.userId !== userId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     await cloudinary.uploader.destroy(video.publicId, {
       resource_type: "video",
     });

@@ -5,10 +5,12 @@ import VideoCard from "@/components/VideoCard";
 import { Video } from "@/types";
 import PageHeader from "@/components/PageHeader";
 import { Film, HardDrive, Search, ArrowUpDown } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 type SortOption = "newest" | "oldest" | "mostCompressed";
 
 function Home() {
+  const { user } = useUser();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -179,7 +181,7 @@ function Home() {
               key={video.id}
               video={video}
               onDownload={handleDownload}
-              onDelete={handleDelete}
+              onDelete={video.userId === user?.id ? handleDelete : undefined}
             />
           ))}
         </div>

@@ -42,6 +42,7 @@ export type VideoMinAggregateOutputType = {
   originalSize: string | null
   compressedSize: string | null
   duration: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type VideoMaxAggregateOutputType = {
   originalSize: string | null
   compressedSize: string | null
   duration: number | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +68,7 @@ export type VideoCountAggregateOutputType = {
   originalSize: number
   compressedSize: number
   duration: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +91,7 @@ export type VideoMinAggregateInputType = {
   originalSize?: true
   compressedSize?: true
   duration?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +104,7 @@ export type VideoMaxAggregateInputType = {
   originalSize?: true
   compressedSize?: true
   duration?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type VideoCountAggregateInputType = {
   originalSize?: true
   compressedSize?: true
   duration?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +217,7 @@ export type VideoGroupByOutputType = {
   originalSize: string
   compressedSize: string
   duration: number
+  userId: string
   createdAt: Date
   updatedAt: Date
   _count: VideoCountAggregateOutputType | null
@@ -246,6 +253,7 @@ export type VideoWhereInput = {
   originalSize?: Prisma.StringFilter<"Video"> | string
   compressedSize?: Prisma.StringFilter<"Video"> | string
   duration?: Prisma.FloatFilter<"Video"> | number
+  userId?: Prisma.StringFilter<"Video"> | string
   createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
 }
@@ -258,6 +266,7 @@ export type VideoOrderByWithRelationInput = {
   originalSize?: Prisma.SortOrder
   compressedSize?: Prisma.SortOrder
   duration?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -273,6 +282,7 @@ export type VideoWhereUniqueInput = Prisma.AtLeast<{
   originalSize?: Prisma.StringFilter<"Video"> | string
   compressedSize?: Prisma.StringFilter<"Video"> | string
   duration?: Prisma.FloatFilter<"Video"> | number
+  userId?: Prisma.StringFilter<"Video"> | string
   createdAt?: Prisma.DateTimeFilter<"Video"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Video"> | Date | string
 }, "id">
@@ -285,6 +295,7 @@ export type VideoOrderByWithAggregationInput = {
   originalSize?: Prisma.SortOrder
   compressedSize?: Prisma.SortOrder
   duration?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.VideoCountOrderByAggregateInput
@@ -305,6 +316,7 @@ export type VideoScalarWhereWithAggregatesInput = {
   originalSize?: Prisma.StringWithAggregatesFilter<"Video"> | string
   compressedSize?: Prisma.StringWithAggregatesFilter<"Video"> | string
   duration?: Prisma.FloatWithAggregatesFilter<"Video"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Video"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Video"> | Date | string
 }
@@ -317,6 +329,7 @@ export type VideoCreateInput = {
   originalSize: string
   compressedSize: string
   duration: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -329,6 +342,7 @@ export type VideoUncheckedCreateInput = {
   originalSize: string
   compressedSize: string
   duration: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -341,6 +355,7 @@ export type VideoUpdateInput = {
   originalSize?: Prisma.StringFieldUpdateOperationsInput | string
   compressedSize?: Prisma.StringFieldUpdateOperationsInput | string
   duration?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -353,6 +368,7 @@ export type VideoUncheckedUpdateInput = {
   originalSize?: Prisma.StringFieldUpdateOperationsInput | string
   compressedSize?: Prisma.StringFieldUpdateOperationsInput | string
   duration?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -365,6 +381,7 @@ export type VideoCreateManyInput = {
   originalSize: string
   compressedSize: string
   duration: number
+  userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -377,6 +394,7 @@ export type VideoUpdateManyMutationInput = {
   originalSize?: Prisma.StringFieldUpdateOperationsInput | string
   compressedSize?: Prisma.StringFieldUpdateOperationsInput | string
   duration?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,6 +407,7 @@ export type VideoUncheckedUpdateManyInput = {
   originalSize?: Prisma.StringFieldUpdateOperationsInput | string
   compressedSize?: Prisma.StringFieldUpdateOperationsInput | string
   duration?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -401,6 +420,7 @@ export type VideoCountOrderByAggregateInput = {
   originalSize?: Prisma.SortOrder
   compressedSize?: Prisma.SortOrder
   duration?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -417,6 +437,7 @@ export type VideoMaxOrderByAggregateInput = {
   originalSize?: Prisma.SortOrder
   compressedSize?: Prisma.SortOrder
   duration?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -429,6 +450,7 @@ export type VideoMinOrderByAggregateInput = {
   originalSize?: Prisma.SortOrder
   compressedSize?: Prisma.SortOrder
   duration?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -467,6 +489,7 @@ export type VideoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   originalSize?: boolean
   compressedSize?: boolean
   duration?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["video"]>
@@ -479,6 +502,7 @@ export type VideoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   originalSize?: boolean
   compressedSize?: boolean
   duration?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["video"]>
@@ -491,6 +515,7 @@ export type VideoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   originalSize?: boolean
   compressedSize?: boolean
   duration?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["video"]>
@@ -503,11 +528,12 @@ export type VideoSelectScalar = {
   originalSize?: boolean
   compressedSize?: boolean
   duration?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type VideoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "publicId" | "originalSize" | "compressedSize" | "duration" | "createdAt" | "updatedAt", ExtArgs["result"]["video"]>
+export type VideoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "publicId" | "originalSize" | "compressedSize" | "duration" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["video"]>
 
 export type $VideoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Video"
@@ -520,6 +546,7 @@ export type $VideoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     originalSize: string
     compressedSize: string
     duration: number
+    userId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["video"]>
@@ -952,6 +979,7 @@ export interface VideoFieldRefs {
   readonly originalSize: Prisma.FieldRef<"Video", 'String'>
   readonly compressedSize: Prisma.FieldRef<"Video", 'String'>
   readonly duration: Prisma.FieldRef<"Video", 'Float'>
+  readonly userId: Prisma.FieldRef<"Video", 'String'>
   readonly createdAt: Prisma.FieldRef<"Video", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Video", 'DateTime'>
 }

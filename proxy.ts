@@ -9,34 +9,30 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in",
   "/sign-up",
   "/",
-  "/home"
-])
+  "/home",
+]);
 
-const isPublicApiRoute = createRouteMatcher([
-  "/api/videos"
-])
+const isPublicApiRoute = createRouteMatcher(["/api/videos"]);
 
-export default clerkMiddleware(async (auth, req)=>{
-  const {userId} = await auth();
-  const currentUrl = new URL(req.url)
-  const isAccessingDashboard = currentUrl.pathname === "/home"
-  const isApiRequest = currentUrl.pathname.startsWith("/api")
+export default clerkMiddleware(async (auth, req) => {
+  const { userId } = await auth();
+  const currentUrl = new URL(req.url);
+  const isAccessingDashboard = currentUrl.pathname === "/home";
+  const isApiRequest = currentUrl.pathname.startsWith("/api");
 
-  if(userId && isPublicRoute(req) && !isAccessingDashboard){
-    return NextResponse.redirect(new URL("/home", req.url))
+  if (userId && isPublicRoute(req) && !isAccessingDashboard) {
+    return NextResponse.redirect(new URL("/home", req.url));
   }
-  //not logged in
-  if(!userId){
-    //if user is not logges in and trying to access a protected route
-    if (!isPublicRoute(req) && !isPublicApiRoute(req)) {
-      return NextResponse.redirect(new URL("/sign-in", req.url));
-    }
-    //if the req is for protected api and user is not logged in
+
+  if (!userId) {
     if (isApiRequest && !isPublicApiRoute(req)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (!isApiRequest && !isPublicRoute(req)) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   }
-  return NextResponse.next()
+  return NextResponse.next();
 });
 
 export const config = {

@@ -13,7 +13,7 @@ dayjs.extend(relativeTime);
 interface VideoCardProps {
   video: Video;
   onDownload: (url: string, title: string) => void;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({
@@ -156,12 +156,14 @@ const VideoCard: React.FC<VideoCardProps> = ({
         </div>
 
         <div className="card-actions justify-end mt-4 gap-2">
-          <button
-            className="btn btn-ghost btn-sm text-error gap-2"
-            onClick={() => onDelete(video.id)}
-          >
-            <Trash2 size={16} />
-          </button>
+          {onDelete && (
+            <button
+              className="btn btn-ghost btn-sm text-error gap-2"
+              onClick={() => onDelete(video.id)}
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
           <button
             className="btn btn-primary btn-sm gap-2"
             onClick={() =>
